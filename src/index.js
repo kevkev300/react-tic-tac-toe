@@ -10,6 +10,14 @@ function Square(props) {
   );
 }
 
+function OrderButton(props) {
+  return (
+    <button onClick={props.onClick}>
+      {props.ascending ? 'order descending' : 'order ascending'}
+    </button>
+  )
+}
+
 class Board extends React.Component {
   renderSquare(i) {
     return <Square
@@ -19,7 +27,6 @@ class Board extends React.Component {
   }
 
   createRow(rowIndex) {
-    console.log(rowIndex)
     return (
       < div className = "board-row" >
         {
@@ -49,6 +56,7 @@ class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
+      ascending: true,
     }
   }
 
@@ -77,6 +85,12 @@ class Game extends React.Component {
       stepNumber: step,
       xIsNext: (step % 2) === 0,
     });
+  }
+
+  handleOrderClick() {
+    this.setState({
+      ascending: !this.state.ascending,
+    })
   }
 
   render() {
@@ -111,7 +125,11 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
-          <ol>{moves}</ol>
+          <OrderButton
+            ascending={this.state.ascending}
+            onClick={() => this.handleOrderClick()}
+          />
+          <ol>{this.state.ascending ? moves : moves.reverse()}</ol>
         </div>
       </div>
     );
