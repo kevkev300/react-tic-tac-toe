@@ -21,6 +21,7 @@ function OrderButton(props) {
 class Board extends React.Component {
   renderSquare(i) {
     return <Square
+      key={i}
       value={this.props.squares[i]}
       isWinningSquare={this.props.winningSquares.includes(i)}
       onClick={() => this.props.onClick(i)} // onClick is a prop here, not a trigger bc it is on a react component, not HTML tag
@@ -29,11 +30,11 @@ class Board extends React.Component {
 
   createRow(rowIndex) {
     return (
-      < div className = "board-row" >
+      <div className="board-row" key={rowIndex}>
         {
           Array(3).fill(0).map((item, index) => { return this.renderSquare(rowIndex * 3 + index) })
         }
-      </div >
+      </div>
     )
   }
 
@@ -98,7 +99,7 @@ class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
-    const endOfGame = this.state.stepNumber == 9;
+    const endOfGame = this.state.stepNumber === 9;
 
     const moves = history.map((step, move) => {
       const location = squareLocation(step.square)
